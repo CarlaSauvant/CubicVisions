@@ -1,0 +1,340 @@
+Using pre-set license
+Built from '2022.3/staging' branch; Version is '2022.3.2f1 (d74737c6db50) revision 14108471'; Using compiler version '192829333'; Build Type 'Release'
+OS: 'Windows 11  (10.0.22621) 64bit Core' Language: 'de' Physical Memory: 16263 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2022.3.2f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker0
+-projectPath
+C:/Users/carla/OneDrive/Desktop/CubicVisionsProject/CubicVisions
+-logFile
+Logs/AssetImportWorker0.log
+-srvPort
+57857
+Successfully changed project path to: C:/Users/carla/OneDrive/Desktop/CubicVisionsProject/CubicVisions
+C:/Users/carla/OneDrive/Desktop/CubicVisionsProject/CubicVisions
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [16700] Host "[IP] 10.181.134.20 [Port] 0 [Flags] 2 [Guid] 428399548 [EditorId] 428399548 [Version] 1048832 [Id] WindowsEditor(7,HPcarla) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
+
+Player connection [16700] Host "[IP] 10.181.134.20 [Port] 0 [Flags] 2 [Guid] 428399548 [EditorId] 428399548 [Version] 1048832 [Id] WindowsEditor(7,HPcarla) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
+
+Refreshing native plugins compatible for Editor in 72.43 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2022.3.2f1 (d74737c6db50)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2022.3.2f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/carla/OneDrive/Desktop/CubicVisionsProject/CubicVisions/Assets
+GfxDevice: creating device client; threaded=0; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce MX150 (ID=0x1d10)
+    Vendor:   NVIDIA
+    VRAM:     1982 MB
+    Driver:   31.0.15.4633
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2022.3.2f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2022.3.2f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2022.3.2f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56524
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.3.2f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.3.2f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.027804 seconds.
+- Loaded All Assemblies, in  1.093 seconds
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.957 seconds
+Domain Reload Profiling: 2046ms
+	BeginReloadAssembly (307ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (3ms)
+	RebuildCommonClasses (102ms)
+	RebuildNativeTypeToScriptingClass (31ms)
+	initialDomainReloadingComplete (195ms)
+	LoadAllAssembliesAndSetupDomain (453ms)
+		LoadAssemblies (299ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (436ms)
+			TypeCache.Refresh (433ms)
+				TypeCache.ScanAssembly (396ms)
+			ScanForSourceGeneratedMonoScriptInfo (1ms)
+			ResolveRequiredComponents (2ms)
+	FinalizeReload (958ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (767ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (29ms)
+			SetLoadedEditorAssemblies (18ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (6ms)
+			ProcessInitializeOnLoadAttributes (555ms)
+			ProcessInitializeOnLoadMethodAttributes (159ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+========================================================================
+Worker process is ready to serve import requests
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  2.037 seconds
+Refreshing native plugins compatible for Editor in 11.28 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Package Manager log level set to [2]
+[Package Manager] Server::EnsureServerProcessIsRunning -- launch failed, reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] UpmClient::Send -- Unable to send message (not connected to UPM process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  3.197 seconds
+Domain Reload Profiling: 5225ms
+	BeginReloadAssembly (350ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (14ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (48ms)
+	RebuildCommonClasses (97ms)
+	RebuildNativeTypeToScriptingClass (39ms)
+	initialDomainReloadingComplete (121ms)
+	LoadAllAssembliesAndSetupDomain (1420ms)
+		LoadAssemblies (766ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (829ms)
+			TypeCache.Refresh (786ms)
+				TypeCache.ScanAssembly (761ms)
+			ScanForSourceGeneratedMonoScriptInfo (34ms)
+			ResolveRequiredComponents (9ms)
+	FinalizeReload (3199ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (2813ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (14ms)
+			SetLoadedEditorAssemblies (10ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (177ms)
+			ProcessInitializeOnLoadAttributes (2537ms)
+			ProcessInitializeOnLoadMethodAttributes (55ms)
+			AfterProcessingInitializeOnLoad (20ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (26ms)
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.12 seconds
+Refreshing native plugins compatible for Editor in 17.16 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3323 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 34 unused Assets / (57.9 KB). Loaded Objects now: 3785.
+Memory consumption went from 124.2 MB to 124.2 MB.
+Total: 12.251000 ms (FindLiveObjects: 0.888800 ms CreateObjectMapping: 0.498400 ms MarkObjects: 10.646000 ms  DeleteObjects: 0.215200 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 24866.148385 seconds.
+  path: Assets/Resources/Prefabs/Toolkit/Sphere.prefab
+  artifactKey: Guid(c1e9e8d8a3b903940ba95688172498a7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/Toolkit/Sphere.prefab using Guid(c1e9e8d8a3b903940ba95688172498a7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bade9aa149a4f16398c0e55c70502c87') in 0.582059 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 10
+========================================================================
+Received Import Request.
+  Time since last request: 0.000060 seconds.
+  path: Assets/Resources/Prefabs/Toolkit/swing.blend
+  artifactKey: Guid(5028ed353404b39459ca3b1335e9bd66) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/Toolkit/swing.blend using Guid(5028ed353404b39459ca3b1335e9bd66) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '91d3e9266b34e481691dff931067af2d') in 0.702018 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 140
+========================================================================
+Received Import Request.
+  Time since last request: 0.000048 seconds.
+  path: Assets/Resources/Prefabs/Toolkit/Capsule.prefab
+  artifactKey: Guid(d4d89b8d79311794cb54f15226ba010a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/Toolkit/Capsule.prefab using Guid(d4d89b8d79311794cb54f15226ba010a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '28c9130dbb1929b478c37ffea27161af') in 0.022698 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 10
+========================================================================
+Received Import Request.
+  Time since last request: 0.000046 seconds.
+  path: Assets/Resources/Prefabs/Toolkit/see-saw.blend
+  artifactKey: Guid(14dfe1c59e489674995b1d34faff3e58) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/Toolkit/see-saw.blend using Guid(14dfe1c59e489674995b1d34faff3e58) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '20906df3e37f3bf0cdc64a5de5e394b5') in 0.188373 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 55
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/Resources/Prefabs/Toolkit/greened bicycle rack.blend
+  artifactKey: Guid(49b804bd5b7a45f45873f39c98721dff) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/Toolkit/greened bicycle rack.blend using Guid(49b804bd5b7a45f45873f39c98721dff) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3eb5e1955abcb146a8a2d5a42809fb5d') in 1.445884 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 416
+========================================================================
+Received Import Request.
+  Time since last request: 0.000050 seconds.
+  path: Assets/Resources/Prefabs/Toolkit/slide.blend
+  artifactKey: Guid(7fbe24d8c2bca584c8862cb256233a04) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/Toolkit/slide.blend using Guid(7fbe24d8c2bca584c8862cb256233a04) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2d477c32b90891724b2721b0e59088a4') in 0.472949 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 147
+========================================================================
+Received Import Request.
+  Time since last request: 0.000041 seconds.
+  path: Assets/Resources/Prefabs/Toolkit/picnic table.blend
+  artifactKey: Guid(ab796fd3d0449d1498e1cc49829d53bf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/Toolkit/picnic table.blend using Guid(ab796fd3d0449d1498e1cc49829d53bf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2019aff2f14c0f19f72fd2a321cd3b3e') in 0.107902 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 37
+========================================================================
+Received Import Request.
+  Time since last request: 0.000035 seconds.
+  path: Assets/Resources/Prefabs/Toolkit/edible garden with berries.blend
+  artifactKey: Guid(239cacb090af97e4d951f060f3d04976) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/Toolkit/edible garden with berries.blend using Guid(239cacb090af97e4d951f060f3d04976) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b8c541ac5a55b35c3e4028d39abbc54e') in 0.929510 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 218
+========================================================================
+Received Import Request.
+  Time since last request: 0.000047 seconds.
+  path: Assets/Resources/Prefabs/Toolkit/vending maschine.blend
+  artifactKey: Guid(72d10ff760b8a8644aef06862661e4df) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/Toolkit/vending maschine.blend using Guid(72d10ff760b8a8644aef06862661e4df) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8a3454541c9817e538ba8bc1d9342eb8') in 1.013883 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 317
+========================================================================
+Received Import Request.
+  Time since last request: 27.652086 seconds.
+  path: Assets/Resources/Prefabs/Toolkit/Combinations/big trash container.blend
+  artifactKey: Guid(ba0869152bc0fd24abf0d36ffb12b109) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/Toolkit/Combinations/big trash container.blend using Guid(ba0869152bc0fd24abf0d36ffb12b109) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '55fa25df73ff0d206c36ee89f4c5037b') in 0.104703 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 32
+========================================================================
+Received Import Request.
+  Time since last request: 0.000048 seconds.
+  path: Assets/Resources/Prefabs/Toolkit/Combinations/climbing wall.blend
+  artifactKey: Guid(fdfa8d9d7fb6b9144ada9a638f71346a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/Toolkit/Combinations/climbing wall.blend using Guid(fdfa8d9d7fb6b9144ada9a638f71346a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cb133cc4ca053073f00d25dc22eedfb6') in 0.778440 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 232
+========================================================================
+Received Import Request.
+  Time since last request: 0.000050 seconds.
+  path: Assets/Resources/Prefabs/Toolkit/Combinations/outdoor kitchen_BBQ station.blend
+  artifactKey: Guid(f14b69d1173522545af1b17742938c1f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/Toolkit/Combinations/outdoor kitchen_BBQ station.blend using Guid(f14b69d1173522545af1b17742938c1f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1a64377dc8b0da2d5106188d7fa36087') in 0.157674 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 45
+========================================================================
+Received Import Request.
+  Time since last request: 0.000128 seconds.
+  path: Assets/Resources/Prefabs/Toolkit/Combinations/petting zoo.blend
+  artifactKey: Guid(ff45f2a82de1b5342a62029624a8ed4b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/Toolkit/Combinations/petting zoo.blend using Guid(ff45f2a82de1b5342a62029624a8ed4b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ecd15c5c02e345773b8cdeb70f507b5b') in 1.251611 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 315
+========================================================================
+Received Import Request.
+  Time since last request: 0.000063 seconds.
+  path: Assets/Resources/Prefabs/Toolkit/Combinations/picknick table with greened pergola.blend
+  artifactKey: Guid(bc375ad35303c8e4487c7e50b519dd79) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/Toolkit/Combinations/picknick table with greened pergola.blend using Guid(bc375ad35303c8e4487c7e50b519dd79) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '39ebdaca075b0b60ba7cdf1714cf2153') in 2.840778 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 739
+========================================================================
+Received Import Request.
+  Time since last request: 13.568806 seconds.
+  path: Assets/Resources/Prefabs/WohnringModel.prefab
+  artifactKey: Guid(44b6f71a8396cdd49904be50c966bc36) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Prefabs/WohnringModel.prefab using Guid(44b6f71a8396cdd49904be50c966bc36) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f9889d8fc909cbbd05a8cd0ae5b7c40c') in 3.680637 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 74825
+========================================================================
+Received Import Request.
+  Time since last request: 7.944143 seconds.
+  path: Assets/Resources/Models/Wohnring_Blender.blend
+  artifactKey: Guid(4c7202246f7b5004493ace488caf6d79) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Models/Wohnring_Blender.blend using Guid(4c7202246f7b5004493ace488caf6d79) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '57310f941734ef256dfaf4d6e4fce3e0') in 358.159935 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 74098
+========================================================================
+Received Import Request.
+  Time since last request: 0.000091 seconds.
+  path: Assets/Resources/Models/Wohnring_Blender.blend
+  artifactKey: Guid(4c7202246f7b5004493ace488caf6d79) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Models/Wohnring_Blender.blend using Guid(4c7202246f7b5004493ace488caf6d79) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '57310f941734ef256dfaf4d6e4fce3e0') in 329.647956 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 74098
+========================================================================
+Received Import Request.
+  Time since last request: 57347.784432 seconds.
+  path: Assets/Resources/Models/Wohnring_Blender.blend1
+  artifactKey: Guid(8a1c8293c80d72042a85ec84bd28eee2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Models/Wohnring_Blender.blend1 using Guid(8a1c8293c80d72042a85ec84bd28eee2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0de64dcee5616a1a41098a62c06b6e32') in 0.938171 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 1
+========================================================================
+Received Import Request.
+  Time since last request: 108.023825 seconds.
+  path: Assets/Resources/Models/Wohnring_Blender.blend3
+  artifactKey: Guid(a2030be239e400441b3f1ee81a79acf9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Models/Wohnring_Blender.blend3 using Guid(a2030be239e400441b3f1ee81a79acf9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '03e7652442e2b5e516d69bda9ffc1786') in 0.014037 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 1
+========================================================================
+Received Import Request.
+  Time since last request: 1.237999 seconds.
+  path: Assets/Resources/Models/Wohnring_Blender.blend2
+  artifactKey: Guid(f7e9e7026ba0ef842a8c35ac3cd48b75) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Models/Wohnring_Blender.blend2 using Guid(f7e9e7026ba0ef842a8c35ac3cd48b75) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '28c747749bebe08ba70b38da29775ffc') in 0.015746 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 1
