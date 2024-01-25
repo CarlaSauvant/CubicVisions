@@ -2,5 +2,10 @@
 
 This is our Git repository, please enjoy!
 
-Chenxuan is here!
+<<<<<<< HEAD
+Chenxuan is here!!!!!
 WELCOME
+=======
+
+just a practice
+>>>>>>> dfd6355f220042f285340b504cbf37dfb9dd0a3d
