@@ -51,5 +51,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "CubicVisions.sln"
+    "dotnet.defaultSolution": "CubicVisions.sln",
+    "dotnet.preferCSharpExtension": true
 }

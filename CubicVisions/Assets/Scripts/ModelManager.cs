@@ -32,6 +32,24 @@ public class ModelManager : MonoBehaviour
         combinationOutputs.Add("Cylinder + Sphere", "Capsule");
         combinationOutputs.Add("Cylinder + Cube", "Cylinder_flat");
         combinationOutputs.Add("Cube + Cylinder", "Cylinder_flat");
+
+        combinationOutputs.Add("Mobility + Mobility", "NEBourhoodHub");
+        combinationOutputs.Add("Mobility + Bush", "GreenBicycleRack");
+        combinationOutputs.Add("Bench + Bush", "PicknickArea");
+        combinationOutputs.Add("Bench + Sports", "PingPong");
+        combinationOutputs.Add("Bench + Food", "GreenBicycleRack");
+        combinationOutputs.Add("Bush + Bush", "Tree");
+        combinationOutputs.Add("Bush + Water", "Greenhouse");
+        combinationOutputs.Add("Water + Food", "WaterFountain");
+        combinationOutputs.Add("Water + Water", "Pond");
+        combinationOutputs.Add("Sports + Bench", "PingPong");
+        combinationOutputs.Add("Sports + Play", "ClimbingWall");
+        combinationOutputs.Add("Sports + Sports", "Footbal");
+        combinationOutputs.Add("Food + Mobility", "FoodTruck");
+        combinationOutputs.Add("Food + Bench", "PicknickTable");
+        combinationOutputs.Add("Food + Water", "WaterFountain");
+        combinationOutputs.Add("Food + Play", "OutdoorKitchen");
+
         // Add more combinations as needed...
     }
 
@@ -126,6 +144,16 @@ public class ModelManager : MonoBehaviour
             combinationOutputs.TryGetValue(logicalCombinationKey2, out outputType2))
         {
             string combinedId = "Combined_" + id1 + "_" + id2;
+            string combinedPrefabPath = $"Assets/Resources/Prefabs/Toolkit/Combinations/{outputType1 ?? outputType2}";
+
+            // Check if the prefab for the combined model exists in Resources/Combinations
+            GameObject combinedModelPrefab = Resources.Load<GameObject>(combinedPrefabPath);
+            if (combinedModelPrefab == null)
+            {
+                Debug.LogError($"Prefab for combined model type '{outputType1 ?? outputType2}' not found in {combinedPrefabPath} folder.");
+                return null;
+            }
+
             return outputType1 != null ? outputType1 : outputType2; // Use the first non-null output type
         }
         else

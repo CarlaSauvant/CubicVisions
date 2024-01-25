@@ -11,18 +11,23 @@ public class TextInputHandler : MonoBehaviour
     public ModelManager modelManager;
 
     // Reference to the TMP_InputField
-    public TMPro.TMP_InputField inputField;
+    public TMPro.TMP_InputField inputField1;
+    public TMPro.TMP_InputField inputField2;
 
     // Method to be called when the input is submitted
     public void OnSubmitInput()
     {
-        Debug.Log("OnSubmitInput called");  // Add this line
+        Debug.Log("OnSubmitInput called");
 
-        // Get the entered text from the input field
-        string inputText = inputField.text;
+        // Get the entered text from the input fields
+        string inputText1 = inputField1.text;
+        string inputText2 = inputField2.text;
+
+        // Create the combined input string
+        string combinedInput = CombineInputs(inputText1, inputText2);
 
         // Parse the input text to extract the coordinate and model information
-        if (TryParseInput(inputText, out string coordinate, out string type1, out string id1, out string type2, out string id2))
+        if (TryParseInput(combinedInput, out string coordinate, out string type1, out string id1, out string type2, out string id2))
         {
             // Place the model prefab on the corresponding tile
             PlaceAndCombineModels(coordinate, type1, id1, type2, id2);
@@ -33,8 +38,29 @@ public class TextInputHandler : MonoBehaviour
             Debug.LogWarning("Invalid input format. Please enter a valid coordinate + model or model + model (e.g., A1 + Cube or Cube_01 + Sphere_03)");
         }
 
-        // Clear the input field
-        inputField.text = "";
+        // Clear the input fields
+        inputField1.text = "";
+        inputField2.text = "";
+    }
+
+    private string CombineInputs(string inputText1, string inputText2)
+    {
+        // Check if one of the inputs is a valid coordinate
+        if (IsValidCoordinate(inputText1))
+        {
+            // If inputText1 is a valid coordinate, it comes first in the combination
+            return $"{inputText1} + {inputText2}";
+        }
+        else if (IsValidCoordinate(inputText2))
+        {
+            // If inputText2 is a valid coordinate, it comes first in the combination
+            return $"{inputText2} + {inputText1}";
+        }
+        else
+        {
+            // If neither is a valid coordinate, assume model+model and combine in any order
+            return $"{inputText1} + {inputText2}";
+        }
     }
 
     private bool TryParseInput(string inputText, out string coordinate, out string type1, out string id1, out string type2, out string id2)
