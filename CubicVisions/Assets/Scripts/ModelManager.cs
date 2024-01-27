@@ -131,36 +131,45 @@ public class ModelManager : MonoBehaviour
     // Combine two models and get the output
     public string CombineModels(string type1, string id1, string type2, string id2)
     {
-        // Define the valid logical combinations
-        string logicalCombinationKey1 = type1 + " + " + type2;
-        string logicalCombinationKey2 = type2 + " + " + type1;
+        // Check if it's a coordinate+model combination
+        bool isCoordinateModelCombination = TextInputHandler.IsValidCoordinate(type1);
 
-        Debug.Log("Logical Combination Key 1: " + logicalCombinationKey1);
-        Debug.Log("Logical Combination Key 2: " + logicalCombinationKey2);
+        string outputType = ""; // Initialize outputType with an empty string
 
-        string outputType1, outputType2 = ""; // Initialize outputType2 with an empty string
+        Debug.Log($"CombineModels called with type1: {type1}, id1: {id1}, type2: {type2}, id2: {id2}");
 
-        if (combinationOutputs.TryGetValue(logicalCombinationKey1, out outputType1) ||
-            combinationOutputs.TryGetValue(logicalCombinationKey2, out outputType2))
+        if (isCoordinateModelCombination)
         {
-            string combinedId = "Combined_" + id1 + "_" + id2;
-            string combinedPrefabPath = $"Assets/Resources/Prefabs/Toolkit/Combinations/{outputType1 ?? outputType2}";
+            // Coordinate + Model combination
+            outputType = $"{type1} + {type2}"; // Always place coordinate first, then model
 
-            // Check if the prefab for the combined model exists in Resources/Combinations
-            GameObject combinedModelPrefab = Resources.Load<GameObject>(combinedPrefabPath);
-            if (combinedModelPrefab == null)
-            {
-                Debug.LogError($"Prefab for combined model type '{outputType1 ?? outputType2}' not found in {combinedPrefabPath} folder.");
-                return null;
-            }
-
-            return outputType1 != null ? outputType1 : outputType2; // Use the first non-null output type
+            Debug.Log($"Combination keys present: {string.Join(", ", combinationOutputs.Keys)}");
         }
         else
         {
-            Debug.LogError("Logical Combination not found for keys: " + logicalCombinationKey1 + " and " + logicalCombinationKey2);
+            // Model + Model combination
+            string combinationKey1 = $"{type1} + {type2}";
+            string combinationKey2 = $"{type2} + {type1}";
+
+            // Check if either combination is valid
+            bool isId1Exists = placedModels.Exists(model => model.id == id1);
+            bool isId2Exists = placedModels.Exists(model => model.id == id2);
+
+            if (isId1Exists && combinationOutputs.TryGetValue(combinationKey1, out outputType))
+            {
+                // Combination found, return the output type
+                return outputType;
+            }
+            else if (isId2Exists && combinationOutputs.TryGetValue(combinationKey2, out outputType))
+            {
+                // Combination found, return the output type
+                return outputType;
+            }
+
+            Debug.LogError($"Combination not defined for {type1} + {type2}");
+            return null; // Return null or handle the error accordingly
         }
 
-        return null; // Combination not defined
+        return outputType; // Return the actual outputType
     }
 }

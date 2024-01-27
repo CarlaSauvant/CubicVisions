@@ -145,7 +145,7 @@ public class TextInputHandler : MonoBehaviour
     }
 
     // Check if the given coordinate is valid
-    private bool IsValidCoordinate(string coordinate)
+    public static bool IsValidCoordinate(string coordinate)
     {
         HashSet<string> validTileCoordinates = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
@@ -195,34 +195,38 @@ public class TextInputHandler : MonoBehaviour
         else
         {
             // This is the scenario of combining models (model1 + model2)
-            // Check if the first model is already placed on any tile
+            // Check if either the first or the second model is already placed on any tile
             ModelManager.ModelData model1Data = modelManager.placedModels.Find(modelData => modelData.id == id1);
+            ModelManager.ModelData model2Data = modelManager.placedModels.Find(modelData => modelData.id == id2);
 
-            if (model1Data != null)
+            if (model1Data != null || model2Data != null)
             {
                 // Combine the models and get the output
                 string combinedOutput = modelManager.CombineModels(type1, id1, type2, id2);
 
                 if (combinedOutput != null)
                 {
-                    // Place the combined model on the same tile
-                    modelManager.PlaceModel(combinedOutput, combinedOutput, model1Data.tileCoordinate);
+                    // Determine the tile coordinate for placing the combined model
+                    string targetTileCoordinate = model1Data != null ? model1Data.tileCoordinate : model2Data.tileCoordinate;
 
-                    Debug.Log("Combined model placed: " + combinedOutput + " on tile " + model1Data.tileCoordinate);
+                    // Place the combined model on the determined tile
+                    modelManager.PlaceModel(combinedOutput, combinedOutput, targetTileCoordinate);
+
+                    Debug.Log("Combined model placed: " + combinedOutput + " on tile " + targetTileCoordinate);
+
+                    // Remove the original models from their tiles
+                    if (model1Data != null) modelManager.RemoveModel(id1);
+                    if (model2Data != null) modelManager.RemoveModel(id2);
                 }
                 else
                 {
                     Debug.LogWarning("Combination not defined for " + type1 + " + " + type2);
                 }
-
-                // Remove the original models from their tiles
-                modelManager.RemoveModel(id1);
-                modelManager.RemoveModel(id2);
             }
             else
             {
-                // If model1 is not found, show an error message
-                Debug.LogError("Attempted to combine models, but model1 (" + type1 + " - " + id1 + ") is not placed on any tile.");
+                // If neither model1 nor model2 is found, show an error message
+                Debug.LogError("Attempted to combine models, but neither model1 (" + type1 + " - " + id1 + ") nor model2 (" + type2 + " - " + id2 + ") is placed on any tile.");
 
                 // Additional handling can be added here if needed
             }
