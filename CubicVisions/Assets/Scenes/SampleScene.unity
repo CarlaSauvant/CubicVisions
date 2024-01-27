@@ -6562,6 +6562,7 @@ MonoBehaviour:
   placedModels: []
   createGridScript: {fileID: 2012335796}
   toBeSaved: {fileID: 1160094121}
+  audioManager: {fileID: 455303789}
 --- !u!4 &2112484075
 Transform:
   m_ObjectHideFlags: 0

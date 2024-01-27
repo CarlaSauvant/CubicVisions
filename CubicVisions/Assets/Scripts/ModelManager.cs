@@ -23,6 +23,9 @@ public class ModelManager : MonoBehaviour
 
     public GameObject toBeSaved;
 
+    public GameObject audioManager; // Reference to the AudioManager GameObject
+    private AudioSource placementSound; // Reference to the AudioSource component for placement sound
+    
     void Start()
     {
         // Initialize combinationOutputs (you can customize this based on your combinations)
@@ -51,6 +54,12 @@ public class ModelManager : MonoBehaviour
         combinationOutputs.Add("Food + Play", "OutdoorKitchen");
 
         // Add more combinations as needed...
+
+        // Add these lines to get the AudioSource component from the AudioManager
+        if (audioManager != null)
+        {
+            placementSound = audioManager.GetComponentInChildren<AudioSource>();
+        }
     }
 
     // Place a model on a tile
@@ -90,6 +99,12 @@ public class ModelManager : MonoBehaviour
             };
 
             placedModels.Add(newModel);
+
+            // Play the placement sound
+            if (placementSound != null)
+            {
+                placementSound.Play();
+            }
 
             Debug.Log("Model placed: " + type + " (" + id + ") on tile " + tileCoordinate);
         }
