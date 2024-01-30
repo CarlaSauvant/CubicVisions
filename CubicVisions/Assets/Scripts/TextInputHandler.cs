@@ -13,6 +13,7 @@ public class TextInputHandler : MonoBehaviour
     // Reference to the TMP_InputField
     public TMPro.TMP_InputField inputField1;
     public TMPro.TMP_InputField inputField2;
+    public static string modelText;
 
     // Method to be called when the input is submitted
     public void OnSubmitInput()
@@ -83,20 +84,40 @@ public class TextInputHandler : MonoBehaviour
             {
                 // Format: "coordinate + model"
                 coordinate = parts[0].Trim();
-                string modelText = parts[1].Trim();
+                modelText = parts[1].Trim();
 
-                // Extract type1 and id1 from modelText
+                // Extract type1, cube_id1, and rotation1 from modelText
                 int lastUnderscoreIndex = modelText.LastIndexOf('_');
                 if (lastUnderscoreIndex != -1 && lastUnderscoreIndex < modelText.Length - 1)
                 {
                     type1 = modelText.Substring(0, lastUnderscoreIndex);
-                    id1 = modelText; // Change this line to include the whole model text
+                    string rotationAndBeyond = modelText.Substring(lastUnderscoreIndex + 1);
 
-                    Debug.Log("Parsed coordinate: " + coordinate);
-                    Debug.Log("Parsed type1: " + type1);
-                    Debug.Log("Parsed id1: " + id1);
+                    // Extract rotation from the end of the string
+                    char rotationChar = rotationAndBeyond[rotationAndBeyond.Length - 1];
 
-                    return true;
+                    if (char.IsDigit(rotationChar))
+                    {
+                        int rotation = int.Parse(rotationChar.ToString());
+
+                        if (rotation >= 1 && rotation <= 4)
+                        {
+                            id1 = modelText.Substring(0, modelText.Length - 1);
+                            Debug.Log("Parsed coordinate: " + coordinate);
+                            Debug.Log("Parsed type1: " + type1);
+                            Debug.Log("Parsed id1: " + id1);
+
+                            return true;
+                        }
+                        else
+                        {
+                            Debug.LogWarning("Invalid rotation format: " + rotationChar);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Invalid rotation format: " + rotationChar);
+                    }
                 }
                 else
                 {
@@ -117,7 +138,7 @@ public class TextInputHandler : MonoBehaviour
                         if (i == 0)
                         {
                             type1 = modelTexts[i].Substring(0, lastUnderscoreIndex);
-                            id1 = modelTexts[i];
+                            id1 = modelText.Substring(0, modelText.Length - 1);
 
                             Debug.Log("Parsed type1: " + type1);
                             Debug.Log("Parsed id1: " + id1);
@@ -125,7 +146,7 @@ public class TextInputHandler : MonoBehaviour
                         else
                         {
                             type2 = modelTexts[i].Substring(0, lastUnderscoreIndex);
-                            id2 = modelTexts[i];
+                            id2 = modelText.Substring(0, modelText.Length - 1);
 
                             Debug.Log("Parsed type2: " + type2);
                             Debug.Log("Parsed id2: " + id2);
