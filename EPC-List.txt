@@ -1,0 +1,7 @@
+Cube Play_1:
+epc[E2 80 11 60 60 00 02 13 54 C5 68 FC ]
+epc[E2 80 11 60 60 00 02 13 54 C5 9A 2C ]
+epc[E2 80 11 60 60 00 02 13 54 C5 68 BC ]
+
+Tile Coordinates:
+epc[E2 80 11 60 60 00 02 13 54 C5 2A 4B ] = C3

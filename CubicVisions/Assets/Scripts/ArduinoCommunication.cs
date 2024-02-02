@@ -1,42 +1,40 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO.Ports;
-using UnityEngine.Events;
 using TMPro;
-using System.Collections.Generic;
+using System;
+using System.IO;
 
 public class ArduinoCommunication : MonoBehaviour
 {
     public TMP_InputField displayText1;
     public TMP_InputField displayText2;
+    public TMP_InputField cancelText1;
+    public TMP_InputField cancelText2;
     public Button startScanningButton; // should be attached to "next" button
     SerialPort serialPort;
-    List<string> dataList = new List<string>();
-    List<string> dataList1 = new List<string>();
-    List<string> dataList2 = new List<string>();
+    EpcDictionary epcDictionary;
+
+    private bool shouldStopReading = false;
 
     void Start()
     {
-        // 初始化串口
-        serialPort = new SerialPort("COM5", 115200);
+        // Initialising the serial port
+        serialPort = new SerialPort("COM6", 115200);
         serialPort.Open();
 
-        // 添加按钮点击事件监听器
+        epcDictionary = new EpcDictionary();
+
+        // Add button click event listener
         startScanningButton.onClick.AddListener(StartScanning);
 
-        // 启动后台线程监听串口
+        // Start a background thread to listen to the serial port
         StartReading();
-    }
-
-    void Update()
-    {
-        // 处理接收到的数据
-        ProcessReceivedData();
     }
 
     void OnDestroy()
     {
-        // 在销毁脚本时关闭串口
+        // Close the serial port when destroying the script
         if (serialPort != null && serialPort.IsOpen)
         {
             serialPort.Close();
@@ -45,7 +43,7 @@ public class ArduinoCommunication : MonoBehaviour
 
     void StartReading()
     {
-        // 启动后台线程监听串口
+        // Start a background thread to listen to the serial port
         System.Threading.Thread thread = new System.Threading.Thread(ReadSerialData);
         thread.Start();
     }
@@ -61,55 +59,68 @@ public class ArduinoCommunication : MonoBehaviour
                     string data = serialPort.ReadLine();
                     Debug.Log("Received: " + data);
 
-                    // 将数据添加到总列表
-                    dataList.Add(data);
+                    // Check if the received data starts with "epc"
+                    if (data.StartsWith("epc", StringComparison.OrdinalIgnoreCase))
+                    {
+                        Debug.Log("EPC read");
 
-                    // 根据总列表长度判断奇偶，分别加入不同的列表
-                    if (dataList.Count % 2 == 0)
-                    {
-                        dataList2.Add(data);
+                        // Use the entire string as the key in the dictionary
+                        string key = data.Trim();
+                        string value = epcDictionary.GetValue(key);
+
+                        // Update the text fields if they are empty
+                        if (string.IsNullOrEmpty(displayText1.text))
+                        {
+                            Debug.Log("EPC " + key + " recognized");
+                            displayText1.text = value;
+                        }
+                        else if (string.IsNullOrEmpty(displayText2.text))
+                        {
+                            Debug.Log("EPC " + key + " recognized");
+                            displayText2.text = value;
+                        }
+                        else
+                        {
+                            // Both text fields are filled; handle this case as needed
+                            Debug.LogWarning("No additional input possible.");
+                        }
                     }
-                    else
+                    if (data.StartsWith("cancel", StringComparison.OrdinalIgnoreCase))
                     {
-                        dataList1.Add(data);
+                        Debug.LogWarning("Tag disabled");
                     }
                 }
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
-                Debug.LogError("Error reading serial data: " + e.Message);
+                if (e is IOException || e is TimeoutException)
+                {
+                    // Handle specific exceptions related to the serial connection being interrupted
+                    Debug.Log("Connection to Arduino interrupted. Check the Arduino connection and restart the game if needed.");
+                }
+                else
+                {
+                    // Log other exceptions
+                    Debug.LogError("Error reading serial data: " + e.Message);
+                }
             }
         }
     }
 
     void StartScanning()
     {
-        // 按钮点击后，向Arduino发送指令
+        // Button clicks send commands to the Arduino
         if (serialPort.IsOpen)
         {
             serialPort.Write("we are ready to rock");
+
+            Debug.Log("Scanning has started.");
         }
     }
 
-    void ProcessReceivedData()
+    // Called when the application is quitting
+    void OnApplicationQuit()
     {
-        // 在主线程中处理接收到的数据
-        if (dataList1.Count > 0)
-        {
-            string data = dataList1[dataList1.Count - 1];
-            Debug.Log("Processing: " + data);
-
-            // 更新显示文本
-            displayText1.text = data;
-        }
-
-        if (dataList2.Count > 0)
-        {
-            string data = dataList2[dataList2.Count - 1];
-            Debug.Log("Processing: " + data);
-
-            // 更新显示文本
-            displayText2.text = data;
-        }
+        shouldStopReading = true;
     }
 }

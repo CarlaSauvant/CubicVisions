@@ -46,6 +46,7 @@
      <Compile Include="Assets\Scripts\Screenshot.cs" />
      <Compile Include="Assets\Scripts\TextInputHandler.cs" />
      <Compile Include="Assets\Scripts\DisappearButton.cs" />
+     <Compile Include="Assets\Scripts\EpcDictionary.cs" />
      <Compile Include="Assets\Scripts\MoveSelectionGrid.cs" />
      <Compile Include="Assets\Scripts\SelectGrid.cs" />
      <Compile Include="Assets\Scripts\MakeTransparent.cs" />
