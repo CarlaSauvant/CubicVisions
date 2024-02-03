@@ -31,13 +31,6 @@ public class ModelManager : MonoBehaviour
     void Start()
     {
         // Initialize combinationOutputs (you can customize this based on your combinations)
-        combinationOutputs.Add("Cube + Sphere", "Block");
-        combinationOutputs.Add("Sphere + Cube", "Block");
-        combinationOutputs.Add("Sphere + Cylinder", "Capsule");
-        combinationOutputs.Add("Cylinder + Sphere", "Capsule");
-        combinationOutputs.Add("Cylinder + Cube", "Cylinder_flat");
-        combinationOutputs.Add("Cube + Cylinder", "Cylinder_flat");
-
         combinationOutputs.Add("Mobility + Mobility", "NEBourhoodHub");
         combinationOutputs.Add("Mobility + Bush", "GreenBicycleRack");
         combinationOutputs.Add("Bench + Bush", "PicknickArea");
@@ -64,70 +57,96 @@ public class ModelManager : MonoBehaviour
         }
     }
 
-    // Place a model on a tile
-    public void PlaceModel(string type, string id, string tileCoordinate)
+// Place a model on a tile
+public void PlaceModel(string type, string id, string tileCoordinate)
+{
+    // Check if the prefab for the model exists in Resources
+    GameObject modelPrefab = Resources.Load<GameObject>("Prefabs/Toolkit/" + type);
+    if (modelPrefab == null)
     {
-        // Check if the prefab for the model exists in Resources
-        GameObject modelPrefab = Resources.Load<GameObject>("Prefabs/Toolkit/" + type);
-        if (modelPrefab == null)
+        Debug.LogError("Prefab for model type '" + type + "' not found in Resources/Prefabs/Toolkit folder.");
+        return;
+    }
+
+    // Check if the tile with the specified coordinate exists in the CreateGrid tile list
+    CreateGrid.TileData targetTile = createGridScript.GetTileList().Find(tileData => tileData.name.Equals(tileCoordinate, System.StringComparison.OrdinalIgnoreCase));
+    if (targetTile == null)
+    {
+        Debug.LogError("Tile with coordinate '" + tileCoordinate + "' not found in the tile list.");
+        return;
+    }
+
+    // Instantiate the model prefab and place it on the tile's position
+    GameObject instantiatedModel = Instantiate(modelPrefab, targetTile.transform.position, Quaternion.identity);
+    instantiatedModel.name = id; // Set the name to match the model's id
+
+    // Set the toBeSaved game object as the parent of the instantiated models.
+    instantiatedModel.transform.SetParent(toBeSaved.transform);
+
+    // Check if the instantiation was successful
+    if (instantiatedModel != null)
+    {
+        // Add a BoxCollider to the instantiated model and automatically adjust its size
+        BoxCollider collider = instantiatedModel.AddComponent<BoxCollider>();
+        AdjustColliderSize(instantiatedModel, collider);
+
+        ModelData newModel = new ModelData
         {
-            Debug.LogError("Prefab for model type '" + type + "' not found in Resources/Prefabs/Toolkit folder.");
-            return;
+            type = type,
+            id = id,
+            tileCoordinate = tileCoordinate,
+            rotation = 0
+        };
+
+        placedModels.Add(newModel);
+
+        // Extract rotation number from input text
+        if (!string.IsNullOrEmpty(TextInputHandler.modelText) && char.IsDigit(TextInputHandler.modelText.Last()))
+        {
+            // Set rotation based on the extracted rotation number
+            newModel.rotation = int.Parse(TextInputHandler.modelText.Last().ToString());
+            instantiatedModel.transform.rotation = Quaternion.Euler(0, newModel.rotation * 90, 0);
         }
 
-        // Check if the tile with the specified coordinate exists in the CreateGrid tile list
-        CreateGrid.TileData targetTile = createGridScript.GetTileList().Find(tileData => tileData.name.Equals(tileCoordinate, System.StringComparison.OrdinalIgnoreCase));
-        if (targetTile == null)
+        // Play the placement sound
+        if (placementSound != null)
         {
-            Debug.LogError("Tile with coordinate '" + tileCoordinate + "' not found in the tile list.");
-            return;
+            placementSound.Play();
         }
 
-        // Instantiate the model prefab and place it on the tile's position
-        GameObject instantiatedModel = Instantiate(modelPrefab, targetTile.transform.position, Quaternion.identity);
-        instantiatedModel.name = id; // Set the name to match the model's id
+        // Set rotation from the new model
+        instantiatedModel.transform.rotation = Quaternion.Euler(0, newModel.rotation * 90, 0);
 
-        // Set the toBeSaved game object as the parent of the instantiated models.
-        instantiatedModel.transform.SetParent(toBeSaved.transform);
+        // default rotation (fbx correction)
+        instantiatedModel.transform.Rotate(270f, 0f, 0f);
 
-        // Check if the instantiation was successful
-        if (instantiatedModel != null)
+        Debug.Log("Model placed: " + type + " (" + id + ") on tile " + tileCoordinate);
+    }
+    else
+    {
+        Debug.LogError("Failed to instantiate model for type '" + type + "'.");
+    }
+}
+
+    // Adjust the size of the collider based on the model's bounds
+    private void AdjustColliderSize(GameObject model, BoxCollider collider)
+    {
+        MeshRenderer meshRenderer = model.GetComponent<MeshRenderer>();
+        if (meshRenderer != null)
         {
-            ModelData newModel = new ModelData
-            {
-                type = type,
-                id = id,
-                tileCoordinate = tileCoordinate,
-                rotation = 0
-            };
+            // Get the bounds of the mesh
+            Bounds bounds = meshRenderer.bounds;
 
-            placedModels.Add(newModel);
-
-            // Extract rotation number from input text
-            if (!string.IsNullOrEmpty(TextInputHandler.modelText) && char.IsDigit(TextInputHandler.modelText.Last()))
-            {
-                // Set rotation based on the extracted rotation number
-                newModel.rotation = int.Parse(TextInputHandler.modelText.Last().ToString());
-                instantiatedModel.transform.rotation = Quaternion.Euler(0, newModel.rotation * 90, 0);
-            }
-
-            // Play the placement sound
-            if (placementSound != null)
-            {
-                placementSound.Play();
-            }
-
-            // default rotation (fbx correction)
-            instantiatedModel.transform.Rotate(270f, 0f, 0f);
-
-            Debug.Log("Model placed: " + type + " (" + id + ") on tile " + tileCoordinate);
+            // Set the size of the BoxCollider based on the model's bounds
+            collider.size = bounds.size;
         }
         else
         {
-            Debug.LogError("Failed to instantiate model for type '" + type + "'.");
+            Debug.LogError("MeshRenderer component not found on the instantiated model.");
         }
     }
 
+    /*
     // Place Water model with specific logic for neighboring Water models
     public void PlaceWaterModel(string type, string id, string tileCoordinate)
     {
@@ -218,6 +237,7 @@ public class ModelManager : MonoBehaviour
             Debug.LogError("Failed to instantiate model for type '" + type + "'.");
         }
     }
+    */
 
     // Count Water neighbors for a given tile coordinate
     private int CountWaterNeighbours(string tileCoordinate)

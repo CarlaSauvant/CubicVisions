@@ -5,7 +5,7 @@ SoftwareSerial softSerial(2, 3); // RX, TX
 #include "SparkFun_UHF_RFID_Reader.h"
 RFID nano;
 
-#define TAG_TIMEOUT 1000 // Timeout for tag detection in milliseconds
+#define TAG_TIMEOUT 3000 // Timeout for tag detection in milliseconds
 
 struct TagInfo
 {
@@ -30,7 +30,7 @@ void setup()
 
   nano.setRegion(REGION_NORTHAMERICA);
 
-  nano.setReadPower(1000);
+  nano.setReadPower(2600);
   // Max Read TX Power is 27.00 dBm and may cause temperature-limit throttling
 
   Serial.println(F("Enter 'we are ready to rock' to begin scanning for tags."));
@@ -96,33 +96,45 @@ void loop()
 
       while (currentTag != nullptr)
       {
-        if (millis() - currentTag->lastDetectionTime > TAG_TIMEOUT)
-        {
-          // Tag timed out, remove and print cancel message
-          Serial.print(F("cancel["));
-          Serial.print(currentTag->epc);
-          Serial.print(F("]"));
-          Serial.println();
-
-          if (previousTag != nullptr)
+          if (millis() - currentTag->lastDetectionTime > TAG_TIMEOUT)
           {
-            previousTag->next = currentTag->next;
-            delete currentTag;
-            currentTag = previousTag->next;
+              // Tag timed out, remove and print cancel message
+              Serial.print(F("cancel["));
+              Serial.print(currentTag->epc);
+              Serial.print(F("]"));
+              Serial.println();
+
+              if (previousTag != nullptr)
+              {
+                  previousTag->next = currentTag->next;
+                  delete currentTag;
+                  currentTag = previousTag->next;
+              }
+              else
+              {
+                  TagInfo* nextTag = currentTag->next;
+                  delete currentTag;
+                  currentTag = nextTag;
+                  tagList = currentTag;
+              }
           }
           else
           {
-            TagInfo* nextTag = currentTag->next;
-            delete currentTag;
-            currentTag = nextTag;
-            tagList = currentTag;
+              // Check if the tag is online
+              if (nano.check() == true && nano.parseResponse() == RESPONSE_IS_TAGFOUND)
+              {
+                  String currentEPC = getEPCAsString();
+
+                  if (currentTag->epc == currentEPC)
+                  {
+                      // Tag is online, update last detection time
+                      currentTag->lastDetectionTime = millis();
+                  }
+              }
+
+              previousTag = currentTag;
+              currentTag = currentTag->next;
           }
-        }
-        else
-        {
-          previousTag = currentTag;
-          currentTag = currentTag->next;
-        }
       }
     }
   }
@@ -147,7 +159,7 @@ void printTagInfo(String epc)
   long timeStamp = nano.getTagTimestamp();
   byte tagEPCBytes = nano.getTagEPCBytes();
 
-  Serial.print(F(" epc["));
+  Serial.print(F("epc["));
   for (byte x = 0; x < tagEPCBytes; x++)
   {
     if (nano.msg[31 + x] < 0x10) Serial.print(F("0"));
@@ -157,10 +169,6 @@ void printTagInfo(String epc)
   Serial.print(F("]"));
 
   Serial.println();
-
-  // convert cancelEPC to uppercase
-  String cancelEPC = "cancel[" + epc.toUpperCase() + "]";
-  Serial.println(cancelEPC);
 }
 
 String getEPCAsString()

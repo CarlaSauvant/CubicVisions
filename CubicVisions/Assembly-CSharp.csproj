@@ -44,10 +44,12 @@
      <Compile Include="Assets\Scripts\ArduinoCommunication.cs" />
      <Compile Include="Assets\Scripts\CreateGrid.cs" />
      <Compile Include="Assets\Scripts\Screenshot.cs" />
+     <Compile Include="Assets\Scripts\UnityMainThreadDispatcher.cs" />
      <Compile Include="Assets\Scripts\TextInputHandler.cs" />
      <Compile Include="Assets\Scripts\DisappearButton.cs" />
      <Compile Include="Assets\Scripts\EpcDictionary.cs" />
      <Compile Include="Assets\Scripts\MoveSelectionGrid.cs" />
+     <Compile Include="Assets\Scripts\DeleteModels.cs" />
      <Compile Include="Assets\Scripts\SelectGrid.cs" />
      <Compile Include="Assets\Scripts\MakeTransparent.cs" />
      <Compile Include="Assets\Scripts\ModelManager.cs" />

@@ -359,6 +359,7 @@
 "Assets/Scripts/ArduinoCommunication.cs"
 "Assets/Scripts/CameraMovement.cs"
 "Assets/Scripts/CreateGrid.cs"
+"Assets/Scripts/DeleteModels.cs"
 "Assets/Scripts/DisappearButton.cs"
 "Assets/Scripts/EpcDictionary.cs"
 "Assets/Scripts/MakeTransparent.cs"
@@ -367,6 +368,7 @@
 "Assets/Scripts/Screenshot.cs"
 "Assets/Scripts/SelectGrid.cs"
 "Assets/Scripts/TextInputHandler.cs"
+"Assets/Scripts/UnityMainThreadDispatcher.cs"
 -langversion:9.0
 
 /deterministic

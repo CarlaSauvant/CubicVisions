@@ -4,6 +4,7 @@ using System.IO.Ports;
 using TMPro;
 using System;
 using System.IO;
+using System.Collections;
 
 public class ArduinoCommunication : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class ArduinoCommunication : MonoBehaviour
 
     void Start()
     {
-        // Initialising the serial port
+        // Initializing the serial port
         serialPort = new SerialPort("COM6", 115200);
         serialPort.Open();
 
@@ -59,35 +60,27 @@ public class ArduinoCommunication : MonoBehaviour
                     string data = serialPort.ReadLine();
                     Debug.Log("Received: " + data);
 
-                    // Check if the received data starts with "epc"
-                    if (data.StartsWith("epc", StringComparison.OrdinalIgnoreCase))
+                    // Use the entire string as the key in the dictionary
+                    string key = data;
+                    string value = epcDictionary.GetValue(key);
+
+                    // Check if the value is not "EPC not found" before updating text fields
+                    if (!value.Equals("EPC not found", StringComparison.OrdinalIgnoreCase))
                     {
-                        Debug.Log("EPC read");
-
-                        // Use the entire string as the key in the dictionary
-                        string key = data.Trim();
-                        string value = epcDictionary.GetValue(key);
-
                         // Update the text fields if they are empty
                         if (string.IsNullOrEmpty(displayText1.text))
                         {
-                            Debug.Log("EPC " + key + " recognized");
-                            displayText1.text = value;
+                            UnityMainThreadDispatcher.Instance().Enqueue(() => UpdateTextField(displayText1, value));
                         }
                         else if (string.IsNullOrEmpty(displayText2.text))
                         {
-                            Debug.Log("EPC " + key + " recognized");
-                            displayText2.text = value;
+                            UnityMainThreadDispatcher.Instance().Enqueue(() => UpdateTextField(displayText2, value));
                         }
                         else
                         {
                             // Both text fields are filled; handle this case as needed
                             Debug.LogWarning("No additional input possible.");
                         }
-                    }
-                    if (data.StartsWith("cancel", StringComparison.OrdinalIgnoreCase))
-                    {
-                        Debug.LogWarning("Tag disabled");
                     }
                 }
             }
@@ -107,6 +100,12 @@ public class ArduinoCommunication : MonoBehaviour
         }
     }
 
+    // Update the text field from the main thread
+    void UpdateTextField(TMP_InputField textField, string value)
+    {
+        textField.text = value;
+    }
+
     void StartScanning()
     {
         // Button clicks send commands to the Arduino
@@ -116,11 +115,5 @@ public class ArduinoCommunication : MonoBehaviour
 
             Debug.Log("Scanning has started.");
         }
-    }
-
-    // Called when the application is quitting
-    void OnApplicationQuit()
-    {
-        shouldStopReading = true;
     }
 }

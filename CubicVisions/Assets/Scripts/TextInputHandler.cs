@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 
 public class TextInputHandler : MonoBehaviour
@@ -15,33 +16,120 @@ public class TextInputHandler : MonoBehaviour
     public TMPro.TMP_InputField inputField2;
     public static string modelText;
 
+    private Coroutine inputCoroutine;
+
+    private bool isField1Triggered = false;
+    private bool isField2Triggered = false;
+
+    private void Update()
+    {
+        CheckForExclamation(inputField1, ref isField1Triggered);
+        CheckForExclamation(inputField2, ref isField2Triggered);
+    }
+
+    private void CheckForExclamation(TMP_InputField inputField, ref bool isFieldTriggered)
+    {
+        string inputText = inputField.text;
+        
+        if (inputText.Contains("!") && !isFieldTriggered)
+        {
+            isFieldTriggered = true;
+            OnSubmitInput();
+        }
+    }
+
     // Method to be called when the input is submitted
     public void OnSubmitInput()
     {
         Debug.Log("OnSubmitInput called");
 
-        // Get the entered text from the input fields
-        string inputText1 = inputField1.text;
-        string inputText2 = inputField2.text;
-
-        // Create the combined input string
-        string combinedInput = CombineInputs(inputText1, inputText2);
-
-        // Parse the input text to extract the coordinate and model information
-        if (TryParseInput(combinedInput, out string coordinate, out string type1, out string id1, out string type2, out string id2))
+        // Check if both fields have detected '!'
+        if (isField1Triggered && isField2Triggered)
         {
-            // Place the model prefab on the corresponding tile
-            PlaceAndCombineModels(coordinate, type1, id1, type2, id2);
+            // Get the entered text from the input fields
+            string inputText1 = inputField1.text;
+            string inputText2 = inputField2.text;
+
+            // Remove '!' from the input fields
+            inputField1.text = RemoveExclamation(inputText1);
+            inputField2.text = RemoveExclamation(inputText2);
+
+            // Create the combined input string
+            string combinedInput = CombineInputs(inputField1.text, inputField2.text);
+
+            // Parse the input text to extract the coordinate and model information
+            if (TryParseInput(combinedInput, out string coordinate, out string type1, out string id1, out string type2, out string id2))
+            {
+                // Place the model prefab on the corresponding tile
+                PlaceAndCombineModels(coordinate, type1, id1, type2, id2);
+            
+                // Clear the input fields after placing the model
+                inputField1.text = "";
+                inputField2.text = "";
+            }
+            else
+            {
+                // Handle invalid input
+                Debug.LogWarning("Invalid input format. Please enter a valid coordinate + model or model + model (e.g., A1 + Cube or Cube_01 + Sphere_03)");
+            }
+
+            // Reset trigger flags
+            isField1Triggered = false;
+            isField2Triggered = false;
+        }
+    }
+
+    private string RemoveExclamation(string inputText)
+    {
+        // Remove '!' from the input text
+        return inputText.Replace("!", "");
+    }
+
+    private IEnumerator WaitForOtherField()
+    {
+        yield return new WaitForSeconds(10f); // Wait for 10 seconds
+
+        if (isField1Triggered && isField2Triggered)
+        {
+            // Both fields detected '!' within 10 seconds
+
+            // Get the entered text from the input fields
+            string inputText1 = inputField1.text;
+            string inputText2 = inputField2.text;
+
+            // Create the combined input string
+            string combinedInput = CombineInputs(inputText1, inputText2);
+
+            // Parse the input text to extract the coordinate and model information
+            if (TryParseInput(combinedInput, out string coordinate, out string type1, out string id1, out string type2, out string id2))
+            {
+                // Place the model prefab on the corresponding tile
+                PlaceAndCombineModels(coordinate, type1, id1, type2, id2);
+
+                // Clear the input fields
+                inputField1.text = "";
+                inputField2.text = "";
+            }
+            else
+            {
+                // Handle invalid input
+                Debug.LogWarning("Invalid input format. Please enter a valid coordinate + model or model + model (e.g., A1 + Cube or Cube_01 + Sphere_03)");
+            }
+
+            // Reset trigger flags
+            isField1Triggered = false;
+            isField2Triggered = false;
         }
         else
         {
-            // Handle invalid input
-            Debug.LogWarning("Invalid input format. Please enter a valid coordinate + model or model + model (e.g., A1 + Cube or Cube_01 + Sphere_03)");
-        }
+            // Not both fields detected '!' within 10 seconds
+            // Reset trigger flags
+            isField1Triggered = false;
+            isField2Triggered = false;
 
-        // Clear the input fields
-        inputField1.text = "";
-        inputField2.text = "";
+            // Display a warning
+            Debug.LogWarning("Both fields must detect '!' within 10 seconds.");
+        }
     }
 
     private string CombineInputs(string inputText1, string inputText2)
@@ -161,6 +249,9 @@ public class TextInputHandler : MonoBehaviour
                 return true;
             }
         }
+
+        inputField1.text = "";
+        inputField2.text = "";
 
         return false;
     }
