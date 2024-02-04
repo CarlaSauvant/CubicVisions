@@ -21,6 +21,11 @@ public class TextInputHandler : MonoBehaviour
     private bool isField1Triggered = false;
     private bool isField2Triggered = false;
 
+    private string valueOld1;
+    private string valueOld2;
+    private string valueNew1;
+    private string valueNew2;
+
     private void Update()
     {
         CheckForExclamation(inputField1, ref isField1Triggered);
@@ -50,6 +55,10 @@ public class TextInputHandler : MonoBehaviour
             string inputText1 = inputField1.text;
             string inputText2 = inputField2.text;
 
+            // Set the additional variables directly
+            valueOld1 = inputText1;
+            valueOld2 = inputText2;
+
             // Remove '!' from the input fields
             inputField1.text = RemoveExclamation(inputText1);
             inputField2.text = RemoveExclamation(inputText2);
@@ -60,9 +69,17 @@ public class TextInputHandler : MonoBehaviour
             // Parse the input text to extract the coordinate and model information
             if (TryParseInput(combinedInput, out string coordinate, out string type1, out string id1, out string type2, out string id2))
             {
+                // Check if it's a model+model case
+                if (!IsValidCoordinate(type1) && !IsValidCoordinate(type2))
+                {
+                    // Set valueNew1 and valueNew2 from the input fields
+                    valueNew1 = inputField1.text + "!";
+                    valueNew2 = inputField2.text + "!";
+                }
+
                 // Place the model prefab on the corresponding tile
                 PlaceAndCombineModels(coordinate, type1, id1, type2, id2);
-            
+
                 // Clear the input fields after placing the model
                 inputField1.text = "";
                 inputField2.text = "";
@@ -300,7 +317,7 @@ public class TextInputHandler : MonoBehaviour
         if (validTileCoordinates.Contains(coordinate))
         {
             // This is the scenario of placing a model on a specified coordinate
-            modelManager.PlaceModel(type1, id1, coordinate);
+            modelManager.PlaceModel(type1, id1, coordinate, valueOld1, valueOld2, "", "");
 
             Debug.Log("Model placed: " + type1 + " (" + id1 + ") on tile " + coordinate);
         }
@@ -314,15 +331,22 @@ public class TextInputHandler : MonoBehaviour
             if (model1Data != null || model2Data != null)
             {
                 // Combine the models and get the output
-                string combinedOutput = modelManager.CombineModels(type1, id1, type2, id2);
+                string combinedOutput = modelManager.CombineModels(type1, id1, type2, id2, valueNew1, valueNew2);
 
                 if (combinedOutput != null)
                 {
                     // Determine the tile coordinate for placing the combined model
                     string targetTileCoordinate = model1Data != null ? model1Data.tileCoordinate : model2Data.tileCoordinate;
 
+                    // Retrieve the existing model data
+                    ModelManager.ModelData existingModelData = model1Data ?? model2Data;
+
+                    // Set the valueOld1 and valueOld2 based on the existing model data
+                    valueOld1 = existingModelData.valueOld1;
+                    valueOld2 = existingModelData.valueOld2;
+
                     // Place the combined model on the determined tile
-                    modelManager.PlaceModel(combinedOutput, combinedOutput, targetTileCoordinate);
+                    modelManager.PlaceModel(combinedOutput, combinedOutput, targetTileCoordinate, valueOld1, valueOld2, valueNew1, valueNew2);
 
                     Debug.Log("Combined model placed: " + combinedOutput + " on tile " + targetTileCoordinate);
 

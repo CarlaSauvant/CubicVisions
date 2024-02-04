@@ -12,6 +12,10 @@ public class ModelManager : MonoBehaviour
         public string id;   // e.g., "Cube_01", "Sphere_03"
         public string tileCoordinate;
         public int rotation;
+        public string valueOld1;
+        public string valueOld2;
+        public string valueNew1;
+        public string valueNew2;
     }
 
     // List to store placed models
@@ -58,7 +62,7 @@ public class ModelManager : MonoBehaviour
     }
 
 // Place a model on a tile
-public void PlaceModel(string type, string id, string tileCoordinate)
+public void PlaceModel(string type, string id, string tileCoordinate, string valueOld1, string valueOld2, string valueNew1, string valueNew2)
 {
     // Check if the prefab for the model exists in Resources
     GameObject modelPrefab = Resources.Load<GameObject>("Prefabs/Toolkit/" + type);
@@ -95,7 +99,11 @@ public void PlaceModel(string type, string id, string tileCoordinate)
             type = type,
             id = id,
             tileCoordinate = tileCoordinate,
-            rotation = 0
+            rotation = 0,
+            valueOld1 = valueOld1,
+            valueOld2 = valueOld2,
+            valueNew1 = valueNew1,
+            valueNew2 = valueNew2
         };
 
         placedModels.Add(newModel);
@@ -146,8 +154,7 @@ public void PlaceModel(string type, string id, string tileCoordinate)
         }
     }
 
-    /*
-    // Place Water model with specific logic for neighboring Water models
+    /* // Place Water model with specific logic for neighboring Water models
     public void PlaceWaterModel(string type, string id, string tileCoordinate)
     {
         // Check if the prefab for the model exists in Resources
@@ -237,8 +244,7 @@ public void PlaceModel(string type, string id, string tileCoordinate)
             Debug.LogError("Failed to instantiate model for type '" + type + "'.");
         }
     }
-    */
-
+    
     // Count Water neighbors for a given tile coordinate
     private int CountWaterNeighbours(string tileCoordinate)
     {
@@ -317,8 +323,9 @@ public void PlaceModel(string type, string id, string tileCoordinate)
     {
         return $"{(char)('A' + row)}{col + 1}";
     }
+    */
 
-    // Remove a model from a tile
+     // Remove a model from a tile
     public void RemoveModel(string id)
     {
         ModelData removedModel = placedModels.Find(model => model.id == id);
@@ -348,7 +355,7 @@ public void PlaceModel(string type, string id, string tileCoordinate)
     }
 
     // Combine two models and get the output
-    public string CombineModels(string type1, string id1, string type2, string id2)
+    public string CombineModels(string type1, string id1, string type2, string id2, string valueNew1, string valueNew2)
     {
         // Check if it's a coordinate+model combination
         bool isCoordinateModelCombination = TextInputHandler.IsValidCoordinate(type1);

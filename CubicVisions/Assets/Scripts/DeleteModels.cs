@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class DeleteModels : MonoBehaviour
 {
+    public TMP_InputField inputField1;
+    public TMP_InputField inputField2;
     private ModelManager modelManager;
 
     void Start()
@@ -53,7 +56,34 @@ public class DeleteModels : MonoBehaviour
                 // Remove the model from the scene and the list only if it's a child of the toBeSaved game object
                 if (clickedModel.transform.parent == modelManager.toBeSaved.transform)
                 {
-                    modelManager.RemoveModel(clickedModelData.id);
+                    // Check if it's a combinationModel or basicModel
+                    if (!string.IsNullOrEmpty(clickedModelData.valueNew1) && !string.IsNullOrEmpty(clickedModelData.valueNew2))
+                    {
+                        // Case combinationModel: valueNew1 and valueNew2 are filled in and not empty
+                        // Retrieve valueOld1 and valueOld2 before deleting the model
+                        string valueOld1 = clickedModelData.valueOld1;
+                        string valueOld2 = clickedModelData.valueOld2;
+
+                        // Remove the model from the scene and the list
+                        modelManager.RemoveModel(clickedModelData.id);
+
+                        // Update the TextMeshPro text fields with valueOld1 and valueOld2
+                        if (inputField1 != null)
+                        {
+                            inputField1.text = valueOld1;
+                        }
+
+                        if (inputField2 != null)
+                        {
+                            inputField2.text = valueOld2;
+                        }
+                    }
+                    else
+                    {
+                        // Case basicModel: valueNew1 and valueNew2 are empty
+                        // Remove the model from the scene and the list
+                        modelManager.RemoveModel(clickedModelData.id);
+                    }
                 }
                 else
                 {
