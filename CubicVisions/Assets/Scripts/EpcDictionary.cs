@@ -167,4 +167,21 @@ public class EpcDictionary
             return "EPC Not Found";
         }
     }
+
+    // Get all keys associated with a specific value
+    public List<string> GetKeysByValue(string value)
+    {
+        List<string> keys = new List<string>();
+
+        foreach (var pair in epcDictionary)
+        {
+            if (pair.Value == value)
+            {
+                keys.Add(pair.Key);
+            }
+        }
+
+        // Return the list of keys
+        return keys;
+    }
 }
