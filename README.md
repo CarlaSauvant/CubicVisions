@@ -1,13 +1,8 @@
 # CubicVisions
 
-This is our Git repository, please enjoy!
+A hybrid toolkit for urban planning by Carla Sauvant, Chenxuan Ren and Ruilin Dong
 
-<<<<<<< HEAD
-Chenxuan is here!!!!!
-WELCOME
-=======
 
-just a practice
->>>>>>> dfd6355f220042f285340b504cbf37dfb9dd0a3d
-
-0128 change
+Creating NEBourhoods together, action "Mobility"
+Student project
+Technical University of Munich, Chair of Architectural Informatics, TUM School of Engineering and Design
