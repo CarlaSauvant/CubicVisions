@@ -65,7 +65,7 @@ public class DeleteModels : MonoBehaviour
                         string valueOld2 = clickedModelData.valueOld2;
 
                         // Remove the model from the scene and the list
-                        modelManager.RemoveModel(clickedModelData.id);
+                        modelManager.RemoveModel(clickedModelData.id, clickedModelData.valueNew1, clickedModelData.valueNew2, clickedModelData.valueOld1, clickedModelData.valueOld2);
 
                         // Update the TextMeshPro text fields with valueOld1 and valueOld2
                         if (inputField1 != null)
@@ -82,7 +82,7 @@ public class DeleteModels : MonoBehaviour
                     {
                         // Case basicModel: valueNew1 and valueNew2 are empty
                         // Remove the model from the scene and the list
-                        modelManager.RemoveModel(clickedModelData.id);
+                        modelManager.RemoveModel(clickedModelData.id, clickedModelData.valueNew1, clickedModelData.valueNew2, clickedModelData.valueOld1, clickedModelData.valueOld2);
                     }
                 }
                 else

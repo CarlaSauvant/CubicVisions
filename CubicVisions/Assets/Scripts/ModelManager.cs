@@ -30,29 +30,40 @@ public class ModelManager : MonoBehaviour
     public GameObject toBeSaved;
 
     public GameObject audioManager; // Reference to the AudioManager GameObject
+    private EpcDictionary epcDictionary;
     private AudioSource placementSound; // Reference to the AudioSource component for placement sound
     
     void Start()
     {
         // Initialize combinationOutputs (you can customize this based on your combinations)
         combinationOutputs.Add("Mobility + Mobility", "NEBourhoodHub");
+        combinationOutputs.Add("Mobility + Water", "BikeCleaningStation");
+        combinationOutputs.Add("Water + Mobility", "WaterTreadmill");
+        combinationOutputs.Add("Play + Play", "BetterPlayground");
+        combinationOutputs.Add("Play + Water", "WaterPark");
+        combinationOutputs.Add("Water + Play", "KiddiePool");
+        combinationOutputs.Add("Mobility + Play", "Skate");
+        combinationOutputs.Add("Play + Mobility", "AccessiblePlayground");
+        combinationOutputs.Add("Mobility + Bench", "BikeChild");
         combinationOutputs.Add("Mobility + Bush", "GreenBicycleRack");
-        combinationOutputs.Add("Bench + Bush", "PicknickArea");
-        combinationOutputs.Add("Bench + Sports", "PingPong");
-        combinationOutputs.Add("Bench + Food", "GreenBicycleRack");
+        combinationOutputs.Add("Mobility + Food", "TransportBike");
+        combinationOutputs.Add("Bench + BasketballHoop", "PingPong");
+        combinationOutputs.Add("Bench + Food", "PicknickTable");
         combinationOutputs.Add("Bush + Bush", "Tree");
         combinationOutputs.Add("Bush + Water", "Greenhouse");
         combinationOutputs.Add("Water + Food", "WaterFountain");
-        combinationOutputs.Add("Water + Water", "Pond");
-        combinationOutputs.Add("Sports + Bench", "PingPong");
-        combinationOutputs.Add("Sports + Play", "ClimbingWall");
-        combinationOutputs.Add("Sports + Sports", "Footbal");
+        combinationOutputs.Add("Play + Food", "PicknickAreaChildren");
+        combinationOutputs.Add("BasketballHoop + Mobility", "Skate");
+        combinationOutputs.Add("BasketballHoop + Bench", "PingPong");
+        combinationOutputs.Add("BasketballHoop + Play", "ClimbingWall");
+        combinationOutputs.Add("BasketballHoop + BasketballHoop", "Football");
         combinationOutputs.Add("Food + Mobility", "FoodTruck");
-        combinationOutputs.Add("Food + Bench", "PicknickTable");
         combinationOutputs.Add("Food + Water", "WaterFountain");
-        combinationOutputs.Add("Food + Play", "OutdoorKitchen");
+        combinationOutputs.Add("Food + Play", "OutdoorKitchen");      
 
         // Add more combinations as needed...
+
+        epcDictionary = new EpcDictionary();
 
         // Add these lines to get the AudioSource component from the AudioManager
         if (audioManager != null)
@@ -61,80 +72,136 @@ public class ModelManager : MonoBehaviour
         }
     }
 
-// Place a model on a tile
-public void PlaceModel(string type, string id, string tileCoordinate, string valueOld1, string valueOld2, string valueNew1, string valueNew2)
-{
-    // Check if the prefab for the model exists in Resources
-    GameObject modelPrefab = Resources.Load<GameObject>("Prefabs/Toolkit/" + type);
-    if (modelPrefab == null)
+    // Place a model on a tile
+    public void PlaceModel(string type, string id, string tileCoordinate, string valueOld1, string valueOld2, string valueNew1, string valueNew2)
     {
-        Debug.LogError("Prefab for model type '" + type + "' not found in Resources/Prefabs/Toolkit folder.");
-        return;
-    }
-
-    // Check if the tile with the specified coordinate exists in the CreateGrid tile list
-    CreateGrid.TileData targetTile = createGridScript.GetTileList().Find(tileData => tileData.name.Equals(tileCoordinate, System.StringComparison.OrdinalIgnoreCase));
-    if (targetTile == null)
-    {
-        Debug.LogError("Tile with coordinate '" + tileCoordinate + "' not found in the tile list.");
-        return;
-    }
-
-    // Instantiate the model prefab and place it on the tile's position
-    GameObject instantiatedModel = Instantiate(modelPrefab, targetTile.transform.position, Quaternion.identity);
-    instantiatedModel.name = id; // Set the name to match the model's id
-
-    // Set the toBeSaved game object as the parent of the instantiated models.
-    instantiatedModel.transform.SetParent(toBeSaved.transform);
-
-    // Check if the instantiation was successful
-    if (instantiatedModel != null)
-    {
-        // Add a BoxCollider to the instantiated model and automatically adjust its size
-        BoxCollider collider = instantiatedModel.AddComponent<BoxCollider>();
-        AdjustColliderSize(instantiatedModel, collider);
-
-        ModelData newModel = new ModelData
+        // Check if the prefab for the model exists in Resources
+        GameObject modelPrefab = Resources.Load<GameObject>("Prefabs/Toolkit/" + type);
+        if (modelPrefab == null)
         {
-            type = type,
-            id = id,
-            tileCoordinate = tileCoordinate,
-            rotation = 0,
-            valueOld1 = valueOld1,
-            valueOld2 = valueOld2,
-            valueNew1 = valueNew1,
-            valueNew2 = valueNew2
-        };
+            Debug.LogError("Prefab for model type '" + type + "' not found in Resources/Prefabs/Toolkit folder.");
+            return;
+        }
 
-        placedModels.Add(newModel);
-
-        // Extract rotation number from input text
-        if (!string.IsNullOrEmpty(TextInputHandler.modelText) && char.IsDigit(TextInputHandler.modelText.Last()))
+        // Check if the tile with the specified coordinate exists in the CreateGrid tile list
+        CreateGrid.TileData targetTile = createGridScript.GetTileList().Find(tileData => tileData.name.Equals(tileCoordinate, System.StringComparison.OrdinalIgnoreCase));
+        if (targetTile == null)
         {
-            // Set rotation based on the extracted rotation number
-            newModel.rotation = int.Parse(TextInputHandler.modelText.Last().ToString());
+            Debug.LogError("Tile with coordinate '" + tileCoordinate + "' not found in the tile list.");
+            return;
+        }
+
+        // Instantiate the model prefab and place it on the tile's position
+        GameObject instantiatedModel = Instantiate(modelPrefab, targetTile.transform.position, Quaternion.identity);
+        instantiatedModel.name = id; // Set the name to match the model's id
+
+        // Set the toBeSaved game object as the parent of the instantiated models.
+        instantiatedModel.transform.SetParent(toBeSaved.transform);
+
+        // Check if the instantiation was successful
+        if (instantiatedModel != null)
+        {
+            // Add a BoxCollider to the instantiated model and automatically adjust its size
+            BoxCollider collider = instantiatedModel.AddComponent<BoxCollider>();
+            AdjustColliderSize(instantiatedModel, collider);
+
+            ModelData newModel = new ModelData
+            {
+                type = type,
+                id = id,
+                tileCoordinate = tileCoordinate,
+                rotation = 0,
+                valueOld1 = valueOld1,
+                valueOld2 = valueOld2,
+                valueNew1 = valueNew1,
+                valueNew2 = valueNew2
+            };
+
+            placedModels.Add(newModel);
+
+            // Extract rotation number from input text
+            if (!string.IsNullOrEmpty(TextInputHandler.modelText) && char.IsDigit(TextInputHandler.modelText.Last()))
+            {
+                // Set rotation based on the extracted rotation number
+                newModel.rotation = int.Parse(TextInputHandler.modelText.Last().ToString());
+                instantiatedModel.transform.rotation = Quaternion.Euler(0, newModel.rotation * 90, 0);
+            }
+
+            // Play the placement sound
+            if (placementSound != null)
+            {
+                placementSound.Play();
+            }
+
+            // Set rotation from the new model
             instantiatedModel.transform.rotation = Quaternion.Euler(0, newModel.rotation * 90, 0);
-        }
 
-        // Play the placement sound
-        if (placementSound != null)
+            // default rotation (fbx correction)
+            instantiatedModel.transform.Rotate(270f, 0f, 0f);
+
+            Debug.Log("Model placed: " + type + " (" + id + ") on tile " + tileCoordinate);
+
+            // retrieve epcs from the dictionary
+            if (string.IsNullOrEmpty(valueNew1) && string.IsNullOrEmpty(valueNew2))
+            {
+                // Search for valueOld1 in epcDictionary if valueNew1 is empty
+                List<string> keysOld1 = epcDictionary.GetKeysByValue(valueOld1);
+                if (keysOld1.Count > 0)
+                {
+                    Debug.Log($"Key retrieved: {string.Join(", ", keysOld1)}");
+                }
+                else
+                {
+                    Debug.LogWarning($"Key for valueOld1 ({valueOld1}) not found in the dictionary.");
+                }
+
+                // Search for valueOld2 in epcDictionary if valueNew2 is empty
+                List<string> keysOld2 = epcDictionary.GetKeysByValue(valueOld2);
+                if (keysOld2.Count > 0)
+                {
+                    Debug.Log($"Key retrieved: {string.Join(", ", keysOld2)}");
+                }
+                else
+                {
+                    Debug.LogWarning($"Key for valueOld2 ({valueOld2}) not found in the dictionary.");
+                }
+            }
+            else
+            {
+                // Retrieve keys for valueNew1 if it's not empty
+                if (!string.IsNullOrEmpty(valueNew1))
+                {
+                    List<string> keysNew1 = epcDictionary.GetKeysByValue(valueNew1);
+                    if (keysNew1.Count > 0)
+                    {
+                        Debug.Log($"Key retrieved: {string.Join(", ", keysNew1)}");
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Key for valueNew1 ({valueNew1}) not found in the dictionary.");
+                    }
+                }
+
+                // Retrieve keys for valueNew2 if it's not empty
+                if (!string.IsNullOrEmpty(valueNew2))
+                {
+                    List<string> keysNew2 = epcDictionary.GetKeysByValue(valueNew2);
+                    if (keysNew2.Count > 0)
+                    {
+                        Debug.Log($"Key retrieved: {string.Join(", ", keysNew2)}");
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Keys for valueNew2 ({valueNew2}) not found in the dictionary.");
+                    }
+                }
+            }
+        }
+        else
         {
-            placementSound.Play();
+            Debug.LogError("Failed to instantiate model for type '" + type + "'.");
         }
-
-        // Set rotation from the new model
-        instantiatedModel.transform.rotation = Quaternion.Euler(0, newModel.rotation * 90, 0);
-
-        // default rotation (fbx correction)
-        instantiatedModel.transform.Rotate(270f, 0f, 0f);
-
-        Debug.Log("Model placed: " + type + " (" + id + ") on tile " + tileCoordinate);
     }
-    else
-    {
-        Debug.LogError("Failed to instantiate model for type '" + type + "'.");
-    }
-}
 
     // Adjust the size of the collider based on the model's bounds
     private void AdjustColliderSize(GameObject model, BoxCollider collider)
@@ -154,179 +221,8 @@ public void PlaceModel(string type, string id, string tileCoordinate, string val
         }
     }
 
-    /* // Place Water model with specific logic for neighboring Water models
-    public void PlaceWaterModel(string type, string id, string tileCoordinate)
-    {
-        // Check if the prefab for the model exists in Resources
-        GameObject modelPrefab = Resources.Load<GameObject>("Prefabs/Toolkit/" + type);
-        if (modelPrefab == null)
-        {
-            Debug.LogError("Prefab for model type '" + type + "' not found in Resources/Prefabs/Toolkit folder.");
-            return;
-        }
-
-        // Check if the tile with the specified coordinate exists in the CreateGrid tile list
-        CreateGrid.TileData targetTile = createGridScript.GetTileList().Find(tileData => tileData.name.Equals(tileCoordinate, System.StringComparison.OrdinalIgnoreCase));
-        if (targetTile == null)
-        {
-            Debug.LogError("Tile with coordinate '" + tileCoordinate + "' not found in the tile list.");
-            return;
-        }
-
-        // Check neighboring tiles for Water elements
-        int waterNeighbourCount = CountWaterNeighbours(tileCoordinate);
-
-        // Determine the specific Water model based on the number of Water neighbors
-        string specificWaterModel = GetSpecificWaterModel(waterNeighbourCount);
-
-        // Instantiate the model prefab and place it on the tile's position
-        GameObject instantiatedModel = Instantiate(modelPrefab, targetTile.transform.position, Quaternion.identity);
-        instantiatedModel.name = id; // Set the name to match the model's id
-
-        // Set the toBeSaved game object as the parent of the instantiated models.
-        instantiatedModel.transform.SetParent(toBeSaved.transform);
-
-        // Check if the instantiation was successful
-        if (instantiatedModel != null)
-        {
-            ModelData newModel = new ModelData
-            {
-                type = type,
-                id = id,
-                tileCoordinate = tileCoordinate
-            };
-
-            placedModels.Add(newModel);
-
-            // Extract rotation number from input text
-            if (!string.IsNullOrEmpty(TextInputHandler.modelText) && char.IsDigit(TextInputHandler.modelText.Last()))
-            {
-                // Set rotation based on the extracted rotation number
-                newModel.rotation = int.Parse(TextInputHandler.modelText.Last().ToString());
-                instantiatedModel.transform.rotation = Quaternion.Euler(0, newModel.rotation * 90, 0);
-            }
-
-            // Play the placement sound
-            if (placementSound != null)
-            {
-                placementSound.Play();
-            }
-
-            // Default rotation (fbx correction)
-            instantiatedModel.transform.Rotate(270f, 0f, 0f);
-
-            Debug.Log("Model placed: " + type + " (" + id + ") on tile " + tileCoordinate +
-                    " with " + waterNeighbourCount + " Water neighbors");
-
-            // Additional logic for specific Water models
-            if (specificWaterModel != null)
-            {
-                // Load the specific Water model prefab and replace the instantiated model
-                GameObject specificWaterPrefab = Resources.Load<GameObject>("Prefabs/Toolkit/" + specificWaterModel);
-
-                if (specificWaterPrefab != null)
-                {
-                    Destroy(instantiatedModel); // Destroy the generic Water model
-                    instantiatedModel = Instantiate(specificWaterPrefab, targetTile.transform.position, Quaternion.identity);
-                    instantiatedModel.name = id; // Set the name to match the model's id
-                    instantiatedModel.transform.SetParent(toBeSaved.transform);
-
-                    Debug.Log("Replaced with specific Water model: " + specificWaterModel);
-                }
-                else
-                {
-                    Debug.LogError("Prefab for specific Water model '" + specificWaterModel + "' not found.");
-                }
-            }
-        }
-        else
-        {
-            Debug.LogError("Failed to instantiate model for type '" + type + "'.");
-        }
-    }
-    
-    // Count Water neighbors for a given tile coordinate
-    private int CountWaterNeighbours(string tileCoordinate)
-    {
-        // Define the coordinates of direct neighbors for a given tile
-        string[] neighborOffsets = { "0,1", "1,0", "0,-1", "-1,0" };
-
-        // Extract row and column indices from the given coordinate
-        int row, col;
-        ConvertCoordinateToIndices(tileCoordinate, out row, out col);
-
-        // Count the number of Water neighbors
-        int waterNeighbourCount = 0;
-
-        foreach (var offset in neighborOffsets)
-        {
-            string[] offsetParts = offset.Split(',');
-            int rowOffset = int.Parse(offsetParts[0]);
-            int colOffset = int.Parse(offsetParts[1]);
-
-            int neighborRow = row + rowOffset;
-            int neighborCol = col + colOffset;
-
-            // Convert indices back to coordinate
-            string neighborCoordinate = ConvertIndicesToCoordinate(neighborRow, neighborCol);
-
-            Debug.Log($"Checking neighbour: {neighborCoordinate}");
-
-            // Check if the neighbor is a valid tile coordinate
-            if (TextInputHandler.IsValidCoordinate(neighborCoordinate))
-            {
-                // Check if there is a Water model on the neighboring tile
-                if (placedModels.Any(model => model.type.StartsWith("Water") && model.tileCoordinate.Equals(neighborCoordinate)))
-                {
-                    waterNeighbourCount++;
-                }
-                else
-                {
-                    Debug.Log("No water on the neighbouring tiles.");
-                }
-            }
-        }
-
-        return waterNeighbourCount;
-    }
-
-    // Get specific Water model based on the number of Water neighbors
-    private string GetSpecificWaterModel(int waterNeighbourCount)
-    {
-        // Determine the specific Water model based on the number of Water neighbors
-        switch (waterNeighbourCount)
-        {
-            case 0:
-                return "Water";
-            case 1:
-                return "WaterOne";
-            case 2:
-                return "WaterTwo";
-            case 3:
-                return "WaterThree";
-            case 4:
-                return "WaterFour";
-            default:
-                return null; // Handle other cases as needed
-        }
-    }
-
-    // Helper method to convert tile coordinate to indices
-    private void ConvertCoordinateToIndices(string coordinate, out int row, out int col)
-    {
-        row = coordinate[0] - 'A';
-        col = int.Parse(coordinate.Substring(1)) - 1;
-    }
-
-    // Helper method to convert indices to tile coordinate
-    private string ConvertIndicesToCoordinate(int row, int col)
-    {
-        return $"{(char)('A' + row)}{col + 1}";
-    }
-    */
-
      // Remove a model from a tile
-    public void RemoveModel(string id)
+    public void RemoveModel(string id, string valueNew1, string valueNew2, string valueOld1, string valueOld2)
     {
         ModelData removedModel = placedModels.Find(model => model.id == id);
 
@@ -338,6 +234,63 @@ public void PlaceModel(string type, string id, string tileCoordinate, string val
             if (modelObject != null)
             {
                 Debug.Log("Found GameObject to destroy: " + modelObject.name); // Add this line
+
+            // retrieve epcs from the dictionary
+            if (string.IsNullOrEmpty(valueNew1) && string.IsNullOrEmpty(valueNew2))
+            {
+                // Search for valueOld1 in epcDictionary if valueNew1 is empty
+                List<string> keysOld1 = epcDictionary.GetKeysByValue(valueOld1);
+                if (keysOld1.Count > 0)
+                {
+                    Debug.Log($"Blocked key retrieved: {string.Join(", ", keysOld1)}");
+                }
+                else
+                {
+                    Debug.LogWarning($"Key for valueOld1 ({valueOld1}) not found in the dictionary.");
+                }
+
+                // Search for valueOld2 in epcDictionary if valueNew2 is empty
+                List<string> keysOld2 = epcDictionary.GetKeysByValue(valueOld2);
+                if (keysOld2.Count > 0)
+                {
+                    Debug.Log($"Blocked key retrieved: {string.Join(", ", keysOld2)}");
+                }
+                else
+                {
+                    Debug.LogWarning($"Key for valueOld2 ({valueOld2}) not found in the dictionary.");
+                }
+            }
+            else
+            {
+                // Retrieve keys for valueNew1 if it's not empty
+                if (!string.IsNullOrEmpty(valueNew1))
+                {
+                    List<string> keysNew1 = epcDictionary.GetKeysByValue(valueNew1);
+                    if (keysNew1.Count > 0)
+                    {
+                        Debug.Log($"Blocked key retrieved: {string.Join(", ", keysNew1)}");
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Key for valueNew1 ({valueNew1}) not found in the dictionary.");
+                    }
+                }
+
+                // Retrieve keys for valueNew2 if it's not empty
+                if (!string.IsNullOrEmpty(valueNew2))
+                {
+                    List<string> keysNew2 = epcDictionary.GetKeysByValue(valueNew2);
+                    if (keysNew2.Count > 0)
+                    {
+                        Debug.Log($"Blocked key retrieved: {string.Join(", ", keysNew2)}");
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Keys for valueNew2 ({valueNew2}) not found in the dictionary.");
+                    }
+                }
+            }
+
                 Destroy(modelObject);
                 Debug.Log("Model removed from the scene: " + removedModel.type + " (" + removedModel.id + ")");
             }

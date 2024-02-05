@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class CreateGrid : MonoBehaviour
 {
-    // Define a class to store tile information
     [System.Serializable]
     public class TileData
     {
@@ -12,10 +11,7 @@ public class CreateGrid : MonoBehaviour
         public Transform transform;
     }
 
-    // List to store tile information
     public List<TileData> tileList = new List<TileData>();
-
-    // Flag to check if the tile list has been populated
     private bool isTileListPopulated = false;
 
     void Start()
@@ -23,14 +19,27 @@ public class CreateGrid : MonoBehaviour
         // Assuming you have a UI button attached to the script
         Button enterButton = GetComponent<Button>();
 
-        // Attach a method to the button click event
         if (enterButton != null)
         {
+            // Attach the MakeList method to the button click event
             enterButton.onClick.AddListener(MakeList);
+        }
+        else
+        {
+            // If there's no button, populate the tile list directly
+            MakeList();
         }
     }
 
-    public void MakeList()
+    // Public method to get the tile list
+    public List<TileData> GetTileList()
+    {
+        // Ensure the tile list is populated before returning it
+        MakeList();
+        return tileList;
+    }
+
+    void MakeList()
     {
         // Check if the tile list has already been populated
         if (!isTileListPopulated)
@@ -45,13 +54,10 @@ public class CreateGrid : MonoBehaviour
 
     void PopulateTileList()
     {
-        // Loop through each child of the GameObject
         foreach (Transform tile in transform)
         {
-            // Check if the tile is already in the list
             if (!IsTileInList(tile))
             {
-                // Create a new TileData instance and add it to the list
                 TileData tileData = new TileData
                 {
                     name = tile.name,
@@ -59,8 +65,6 @@ public class CreateGrid : MonoBehaviour
                 };
 
                 tileList.Add(tileData);
-
-                // Display the information in the console (for testing purposes)
                 Debug.Log("Tile name: " + tileData.name + ", Position: " + tileData.transform.position);
             }
         }
@@ -68,13 +72,6 @@ public class CreateGrid : MonoBehaviour
 
     bool IsTileInList(Transform tile)
     {
-        // Check if the tile is already in the list based on its name
         return tileList.Exists(tileData => tileData.name == tile.name);
-    }
-
-    // Public method to get the tile list
-    public List<TileData> GetTileList()
-    {
-        return tileList;
     }
 }

@@ -57,10 +57,10 @@ public class EpcDictionary
             {"CB 02 05 00 ", "Mobility_25!"},
 
             // play cube #1
-            {"CB 03 01 00 ", "Play_11!"},
-            {"CB 03 02 00 ", "Play_12!"},
-            {"CB 03 03 00 ", "Play_13!"},
-            {"CB 03 04 00 ", "Play_14!"},
+            {"E2 80 11 60 60 00 02 13 54 C5 D8 D9 ", "Play_11!"},
+            {"E2 80 11 60 60 00 02 13 54 C5 D8 C9 ", "Play_12!"},
+            {"E2 80 11 60 60 00 02 13 54 C5 D8 8A ", "Play_13!"},
+            {"E2 80 11 60 60 00 02 13 54 C5 D8 F9 ", "Play_14!"},
             {"CB 03 05 00 ", "Play_15!"},
 
             // play cube #2
@@ -166,6 +166,22 @@ public class EpcDictionary
             UnityEngine.Debug.LogError("EPC not found in EpcDictionary: " + key);
             return "EPC Not Found";
         }
+    }
+
+    // Get the key associated with the value
+    public string GetKey(string value)
+    {
+        foreach (var pair in epcDictionary)
+        {
+            if (pair.Value == value)
+            {
+                return pair.Key;
+            }
+        }
+
+        // Handle the case when the value is not found, for example, return an error message or an empty string
+        UnityEngine.Debug.LogError("Tag name not found in EpcDictionary: " + value);
+        return "Tag name Not Found";
     }
 
     // Get all keys associated with a specific value

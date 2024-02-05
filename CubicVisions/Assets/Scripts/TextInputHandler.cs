@@ -10,6 +10,7 @@ public class TextInputHandler : MonoBehaviour
 {
     // Reference to the ModelManager script
     public ModelManager modelManager;
+    public BlockedEpc blockedEpc;
 
     // Reference to the TMP_InputField
     public TMPro.TMP_InputField inputField1;
@@ -55,6 +56,17 @@ public class TextInputHandler : MonoBehaviour
             string inputText1 = inputField1.text;
             string inputText2 = inputField2.text;
 
+            // Check if the input texts match any entry in the BlockedEpc's retrievedKeys list
+            bool isInput1Blocked = IsBlockedInput(inputText1);
+            bool isInput2Blocked = IsBlockedInput(inputText2);
+
+            // If at least one input is blocked, log a warning and return without further processing
+            if (isInput1Blocked || isInput2Blocked)
+            {
+                Debug.LogWarning("Blocked input detected. Inputs will not be processed.");
+                return;
+            }
+
             // Set the additional variables directly
             valueOld1 = inputText1;
             valueOld2 = inputText2;
@@ -94,6 +106,13 @@ public class TextInputHandler : MonoBehaviour
             isField1Triggered = false;
             isField2Triggered = false;
         }
+    }
+
+    // Helper method to check if an input text is blocked
+    private bool IsBlockedInput(string inputText)
+    {
+        // Check if the input text matches any entry in the BlockedEpc's retrievedKeys list
+        return blockedEpc.retrievedKeys.Any(data => inputText.Contains(data.key));
     }
 
     private string RemoveExclamation(string inputText)
@@ -351,8 +370,8 @@ public class TextInputHandler : MonoBehaviour
                     Debug.Log("Combined model placed: " + combinedOutput + " on tile " + targetTileCoordinate);
 
                     // Remove the original models from their tiles
-                    if (model1Data != null) modelManager.RemoveModel(id1);
-                    if (model2Data != null) modelManager.RemoveModel(id2);
+                    if (model1Data != null) modelManager.RemoveModel(id1, valueNew1, valueNew2, valueOld1, valueOld2);
+                    if (model2Data != null) modelManager.RemoveModel(id2, valueNew1, valueNew2, valueOld1, valueOld2);
                 }
                 else
                 {

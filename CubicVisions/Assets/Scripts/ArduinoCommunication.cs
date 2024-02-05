@@ -5,6 +5,7 @@ using TMPro;
 using System;
 using System.IO;
 using System.Collections;
+using System.Linq;
 
 public class ArduinoCommunication : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class ArduinoCommunication : MonoBehaviour
     public TMP_InputField cancelText1;
     public TMP_InputField cancelText2;
     public Button startScanningButton; // should be attached to "next" button
+    public BlockedEpc blockedEpc;
     SerialPort serialPort;
     EpcDictionary epcDictionary;
 
@@ -56,8 +58,20 @@ public class ArduinoCommunication : MonoBehaviour
             try
             {
                 if (serialPort.IsOpen)
-                {
+                {                               
                     string data = serialPort.ReadLine();
+
+                    // Check if the input texts match any entry in the BlockedEpc's retrievedKeys list
+                    bool isInput1Blocked = IsBlockedInput(data);
+                    bool isInput2Blocked = IsBlockedInput(data);
+
+                    // If at least one input is blocked, log a warning and return without further processing
+                    if (isInput1Blocked || isInput2Blocked)
+                    {
+                        Debug.LogWarning("Blocked input detected. Inputs will not be processed.");
+                        return;
+                    }
+
                     Debug.Log("Received: " + data);
 
                     // Use the entire string as the key in the dictionary
@@ -98,6 +112,13 @@ public class ArduinoCommunication : MonoBehaviour
                 }
             }
         }
+    }
+
+    // Helper method to check if an input text is blocked
+    private bool IsBlockedInput(string inputText)
+    {
+        // Check if the input text matches any entry in the BlockedEpc's retrievedKeys list
+        return blockedEpc.retrievedKeys.Any(data => inputText.Contains(data.key));
     }
 
     // Update the text field from the main thread
