@@ -282,7 +282,7 @@ MonoBehaviour:
   cancelText1: {fileID: 681591628}
   cancelText2: {fileID: 243148868}
   startScanningButton: {fileID: 278698122}
-  blockedEpc: {fileID: 0}
+  blockedEpc: {fileID: 2112484077}
 --- !u!1 &61235971
 GameObject:
   m_ObjectHideFlags: 0
